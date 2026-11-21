@@ -1,49 +1,40 @@
-# Activity Provider «Sei como resolver problemas técnicos»
+# Sei como resolver problemas técnicos
 
-Primeira versão do Activity Provider para a Inven!RA (Tópico 4, semana 1).
-Responde com dados de exemplo aos cinco pedidos com URL fixo. O «Provide activity» ainda não está implementado.
+Activity Provider para a Inven!RA, desenvolvido no âmbito da unidade curricular
+Arquitetura e Padrões de Software (Mestrado em Engenharia Informática e Tecnologia Web, Universidade Aberta, 2026/27).
 
-Não tem dependências externas, só precisa do Node.js 18 ou superior.
+Pedro Pires
 
-## Pedidos implementados
+## Sobre a atividade
 
-| Pedido | Método e URL |
-|---|---|
-| Ficheiro de registo | `GET /` ou `GET /registo` |
-| Configuração (config_url) | `GET /configuracao.html` |
-| Parâmetros (json_params_url) | `GET /json-params` |
-| Deploy (user_url) | `GET /deploy?activityID=...` ou `GET /deploy/<activityID>` |
-| Lista de analíticas (analytics_list_url) | `GET /lista-analytics` |
-| Analíticas (analytics_url) | `POST /analytics` com `{"activityID": "..."}` |
+A atividade tem fichas de cenário curtas sobre os problemas técnicos mais frequentes no colégio onde trabalho,
+como a palavra-passe esquecida, o ecrã azul ou o projetor sem imagem. Cada ficha tem até cinco passos e termina
+com o problema resolvido ou com a indicação de a quem pedir ajuda e que informação levar.
 
-## Organização do código (segue a arquitetura do Tópico 3)
+## Estado atual (Tópico 4, semana 1)
 
-- `src/server.js` – **Serviços Inven!RA**: recebe os pedidos e monta as respostas no formato da especificação.
-- `src/catalogo.js` – **Catálogo de Fichas**: fichas, públicos e lista de analíticas.
-- `src/instancias.js` – **Gestor de Instâncias**: cria as instâncias no deploy (em memória nesta fase).
-- `src/calculador.js` – **Calculador de Analíticas**: por agora devolve dados de exemplo.
-- `src/config_page.js` – página de configuração.
+Nesta fase o Activity Provider responde, com dados de exemplo, aos cinco pedidos da Inven!RA com URL fixo:
 
-## Correr localmente
+- configuração: `GET /configuracao.html`
+- parâmetros: `GET /json-params`
+- deploy: `GET /deploy?activityID=...`
+- lista de analíticas: `GET /lista-analytics`
+- analíticas: `POST /analytics` com `{"activityID": "..."}`
 
-```
-npm start
-```
+O endereço principal mostra o ficheiro de registo da atividade. O "Provide activity" ainda não está implementado.
 
-O servidor fica em http://localhost:3000. Para testar:
+Endereço: https://sei-resolver-problemas-ap.onrender.com
 
-```
-curl http://localhost:3000/json-params
-curl "http://localhost:3000/deploy?activityID=teste1"
-curl http://localhost:3000/lista-analytics
-curl -X POST -H "Content-Type: application/json" -d '{"activityID":"teste1"}' http://localhost:3000/analytics
-```
+Observação: No plano gratuito o serviço adormece sem uso, por isso o primeiro pedido pode demorar cerca de um minuto.
 
-## Alojar no Render
+## Organização do código
 
-1. Criar um repositório no GitHub com estes ficheiros.
-2. No Render, New → Web Service → ligar o repositório.
-3. Runtime: Node. Build command: `npm install`. Start command: `npm start`.
-4. Depois do deploy, abrir `https://<nome>.onrender.com/` para ver o ficheiro de registo com os URL finais.
+Organizei os ficheiros de acordo com os componentes da arquitetura que apresentei no Tópico 3:
 
-No plano gratuito o serviço adormece sem uso, por isso o primeiro pedido pode demorar cerca de um minuto.
+- `server.js` – Serviços Inven!RA, recebe os pedidos e responde no formato da especificação
+- `catalogo.js` – Catálogo de Fichas
+- `instancias.js` – Gestor de Instâncias
+- `calculador.js` – Calculador de Analíticas (por agora com dados de exemplo)
+- `config_page.js` – página de configuração
+
+Usei Node.js sem bibliotecas externas. Para correr localmente basta `npm start` (porta 3000).
